@@ -9,6 +9,7 @@ import Platform from './features/base/react/Platform.web';
 import { getJitsiMeetGlobalNS } from './features/base/util/helpers';
 import DialInSummaryApp from './features/invite/components/dial-in-summary/web/DialInSummaryApp';
 import PrejoinApp from './features/prejoin/components/web/PrejoinApp';
+import AppCustom from './features/customer-dashboard/App'
 
 const logger = getLogger('index.web');
 const OS = Platform.OS;
@@ -43,7 +44,7 @@ if (OS === 'ios') {
 const globalNS = getJitsiMeetGlobalNS();
 
 globalNS.entryPoints = {
-    APP: App,
+    APP: AppCustom,
     PREJOIN: PrejoinApp,
     DIALIN: DialInSummaryApp
 };
