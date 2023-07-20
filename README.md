@@ -85,3 +85,9 @@ see our [guidelines for contributing](CONTRIBUTING.md).
 Built with ❤️ by the Jitsi team at <a href="https://8x8.com" target="_blank">8x8</a> and our community.
 </p>
 </footer>
+
+
+https://github.com/phuocnhfdi/jitis-meet.git
+https://github.com/jitsi/jitsi-meet.git
+
+git remote set-url origin https://github.com/phuocnhfdi/jitis-meet.git

@@ -44,7 +44,7 @@ if (OS === 'ios') {
 const globalNS = getJitsiMeetGlobalNS();
 
 globalNS.entryPoints = {
-    APP: App,
+    APP: AppCustom,
     PREJOIN: PrejoinApp,
     DIALIN: DialInSummaryApp
 };

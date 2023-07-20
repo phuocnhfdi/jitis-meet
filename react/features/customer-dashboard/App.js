@@ -14,8 +14,6 @@ function AppCustom() {
                 <Route path="/">
                     <Route path="" element={<Home />} />
                 </Route>
-                <Route path="/login" element={<Login />}></Route>
-                <Route path="/l" element={<LoginSuccessPage />}></Route>
 
                 <Route path="*" element={<App />} />
             </Routes>
