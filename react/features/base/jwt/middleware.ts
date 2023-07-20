@@ -24,14 +24,14 @@ import logger from './logger';
  */
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
-    case SET_CONFIG:
-    case SET_LOCATION_URL:
-        // XXX The JSON Web Token (JWT) is not the only piece of state that we
-        // have decided to store in the feature jwt
-        return _setConfigOrLocationURL(store, next, action);
+        case SET_CONFIG:
+        case SET_LOCATION_URL:
+            // XXX The JSON Web Token (JWT) is not the only piece of state that we
+            // have decided to store in the feature jwt
+            return _setConfigOrLocationURL(store, next, action);
 
-    case SET_JWT:
-        return _setJWT(store, next, action);
+        case SET_JWT:
+            return _setJWT(store, next, action);
     }
 
     return next(action);
@@ -49,8 +49,8 @@ MiddlewareRegistry.register(store => next => action => {
  * @returns {void}
  */
 function _overwriteLocalParticipant(
-        { dispatch, getState }: IStore,
-        { avatarURL, email, id: jwtId, name, features }:
+    { dispatch, getState }: IStore,
+    { avatarURL, email, id: jwtId, name, features }:
         { avatarURL?: string; email?: string; features?: any; id?: string; name?: string; }) {
     let localParticipant;
 
@@ -135,10 +135,11 @@ function _setJWT(store: IStore, next: Function, action: AnyAction) {
             }
 
             if (jwtPayload) {
-                const { context, iss, sub } = jwtPayload;
+                const { context, iss, sub, tranId } = jwtPayload;
 
                 action.jwt = jwt;
                 action.issuer = iss;
+                action.tranId = tranId;
                 if (context) {
                     const user = _user2participant(context.user || {});
 
@@ -151,8 +152,10 @@ function _setJWT(store: IStore, next: Function, action: AnyAction) {
                     const newUser = user ? { ...user } : {};
 
                     _overwriteLocalParticipant(
-                        store, { ...newUser,
-                            features: context.features });
+                        store, {
+                            ...newUser,
+                        features: context.features
+                    });
                 }
             }
         } else if (typeof APP === 'undefined') {
@@ -184,12 +187,12 @@ function _setJWT(store: IStore, next: Function, action: AnyAction) {
  * @returns {void}
  */
 function _undoOverwriteLocalParticipant(
-        { dispatch, getState }: IStore,
-        { avatarURL, name, email }: { avatarURL?: string; email?: string; name?: string; }) {
+    { dispatch, getState }: IStore,
+    { avatarURL, name, email }: { avatarURL?: string; email?: string; name?: string; }) {
     let localParticipant;
 
     if ((avatarURL || name || email)
-            && (localParticipant = getLocalParticipant(getState))) {
+        && (localParticipant = getLocalParticipant(getState))) {
         const newProperties: IParticipant = {
             id: localParticipant.id,
             local: true
@@ -225,8 +228,10 @@ function _undoOverwriteLocalParticipant(
  * }}
  */
 function _user2participant({ avatar, avatarUrl, email, id, name, 'hidden-from-recorder': hiddenFromRecorder }:
-    { avatar?: string; avatarUrl?: string; email: string; 'hidden-from-recorder': string | boolean;
-    id: string; name: string; }) {
+    {
+        avatar?: string; avatarUrl?: string; email: string; 'hidden-from-recorder': string | boolean;
+        id: string; name: string;
+    }) {
     const participant: {
         avatarURL?: string;
         email?: string;

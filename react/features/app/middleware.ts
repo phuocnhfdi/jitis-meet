@@ -4,6 +4,7 @@ import { createConnectionEvent } from '../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../analytics/functions';
 import { SET_ROOM } from '../base/conference/actionTypes';
 import { CONNECTION_ESTABLISHED, CONNECTION_FAILED } from '../base/connection/actionTypes';
+import { CONFERENCE_JOINED, CONFERENCE_JOIN_IN_PROGRESS, CONFERENCE_LEFT } from '../base/conference/actionTypes';
 import { getURLWithoutParams } from '../base/connection/utils';
 import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
 import { inIframe } from '../base/util/iframeUtils';
@@ -11,17 +12,46 @@ import { inIframe } from '../base/util/iframeUtils';
 import { reloadNow } from './actions';
 import { _getRouteToRender } from './getRouteToRender';
 import { IStore } from './types';
+import axios from "axios";
 
 MiddlewareRegistry.register(store => next => action => {
+    console.log(1111, action.type);
     switch (action.type) {
-    case CONNECTION_ESTABLISHED:
-        return _connectionEstablished(store, next, action);
-    case CONNECTION_FAILED:
-        return _connectionFailed(store, next, action);
+        case CONNECTION_ESTABLISHED:
+            return _connectionEstablished(store, next, action);
+        case CONNECTION_FAILED:
+            return _connectionFailed(store, next, action);
 
-    case SET_ROOM:
-        return _setRoom(store, next, action);
+        case SET_ROOM:
+            return _setRoom(store, next, action);
+
+        case CONFERENCE_JOINED:
+            //TODO(phuocnh): call socket
+
+            try {
+                let b = store.getState()['features/base/jwt'];
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'token': b.jwt
+                }
+
+                axios.post('http://localhost:5000/userJoinCalled/' + b.tranId, {}, {
+                    headers: headers
+                }).then((rs) => {
+                    console.log(222, rs)
+                });
+            } catch (error) {
+
+            }
+
+            break;
+        case CONFERENCE_LEFT:
+            window.close();
+            debugger;
+
+            break;
     }
+
 
     return next(action);
 });
@@ -56,9 +86,9 @@ function _connectionEstablished(store: IStore, next: Function, action: AnyAction
     }
 
     if (history
-            && location
-            && history.length
-            && typeof history.replaceState === 'function') {
+        && location
+        && history.length
+        && typeof history.replaceState === 'function') {
         // @ts-ignore
         const replacement = getURLWithoutParams(location);
 

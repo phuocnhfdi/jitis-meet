@@ -100,9 +100,9 @@ class Watermarks extends Component<IProps, State> {
     render() {
         return (
             <div>
-                {
+                {/* {
                     this._renderJitsiWatermark()
-                }
+                } */}
                 {
                     this._renderBrandWatermark()
                 }

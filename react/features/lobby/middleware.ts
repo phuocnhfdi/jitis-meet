@@ -107,6 +107,7 @@ MiddlewareRegistry.register(store => next => action => {
 StateListenerRegistry.register(
     state => state['features/base/conference'].conference,
     (conference, { dispatch, getState }, previousConference) => {
+      
         if (conference && !previousConference) {
             conference.on(JitsiConferenceEvents.MEMBERS_ONLY_CHANGED, (enabled: boolean) => {
                 dispatch(setLobbyModeEnabled(enabled));
@@ -114,9 +115,12 @@ StateListenerRegistry.register(
                     dispatch(setLobbyMessageListener());
                 }
             });
-
+            
             conference.on(JitsiConferenceEvents.LOBBY_USER_JOINED, (id: string, name: string) => {
+                
                 const { soundsParticipantKnocking } = getState()['features/base/settings'];
+             
+                
 
                 batch(() => {
                     dispatch(
@@ -159,6 +163,7 @@ StateListenerRegistry.register(
             });
 
             conference.on(JitsiConferenceEvents.LOBBY_USER_LEFT, (id: string) => {
+                
                 batch(() => {
                     dispatch(knockingParticipantLeft(id));
                     dispatch(removeLobbyChatParticipant());

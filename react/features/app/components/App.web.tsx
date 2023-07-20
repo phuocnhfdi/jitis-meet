@@ -47,7 +47,14 @@ export class App extends AbstractApp {
             <JitsiThemeProvider>
                 <GlobalStyles />
                 <ChromeExtensionBanner />
-                { super._createMainElement(component, props) }
+                {/* {super._createMainElement(component, props)} */}
+                <div className='row' style={{ height: "100%"}}>
+
+
+                    <div className='col-3'><div ><img src="https://kenh14cdn.com/thumb_w/620/203336854389633024/2022/9/2/photo-1-1662103519036751830429.jpg"/></div></div>
+                    <div className='col-9'>{super._createMainElement(component, props)}</div>
+                </div>
+
             </JitsiThemeProvider>
         );
     }

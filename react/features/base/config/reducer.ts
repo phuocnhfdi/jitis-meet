@@ -153,6 +153,8 @@ function _getInitialState() {
 function _setConfig(state: IConfig, { config }: { config: IConfig; }) {
     // eslint-disable-next-line no-param-reassign
     config = _translateLegacyConfig(config);
+    config.prejoinConfig = {  enabled: false };
+    //TODO:phuocnh
 
     const { audioQuality } = config;
     const hdAudioOptions = {};

@@ -16,7 +16,6 @@ export function getOverlayToRender(state: IReduxState) {
         SuspendedOverlay,
         UserMediaPermissionsOverlay
     ];
-
     for (const overlay of overlays) {
         // react-i18n / react-redux wrap components and thus we cannot access
         // the wrapped component's static methods directly.
